@@ -8,6 +8,7 @@ import {
   startOfDay,
   endOfDay,
   sameDay,
+  sameTime,
   cronSchedule
 } from 'ember-datetime-select/utils/helpers';
 import later from 'later';
@@ -15,6 +16,7 @@ import later from 'later';
 const date1 = new Date(Date.parse('2016-01-01T15:00:00Z'));
 const date2 = new Date(Date.parse('2016-01-01T18:00:00Z'));
 const date3 = new Date(Date.parse('2016-01-07T18:00:00Z'));
+const InvalidDate = new Date('foo').constructor;
 
 describe('helpers', function() {
   describe('#startOfDay', function() {
@@ -26,6 +28,10 @@ describe('helpers', function() {
       let exp = new Date(Date.parse('2016-01-01T00:00:00Z'));
       expect(startOfDay(date1).toString()).to.eql(exp.toString());
     });
+
+    it('returns an invalid date if param is not a date', function() {
+      expect(startOfDay({})).to.be.instanceOf(InvalidDate);
+    });
   });
 
   describe('#endOfDay', function() {
@@ -36,6 +42,10 @@ describe('helpers', function() {
     it('returns a date with end of day', function() {
       let exp = new Date(Date.parse('2016-01-01T23:59:59Z'));
       expect(endOfDay(date1).toString()).to.eql(exp.toString());
+    });
+
+    it('returns an invalid date if param is not a date', function() {
+      expect(endOfDay({})).to.be.instanceOf(InvalidDate);
     });
   });
 
@@ -50,6 +60,36 @@ describe('helpers', function() {
 
     it('is false for dates on different days', function() {
       expect(sameDay(date2, date3)).to.be.false;
+    });
+
+    it('is false if one param is not a date', function() {
+      expect(sameDay(null, date3)).to.be.false;
+    });
+
+    it('is false if both params are not a date', function() {
+      expect(sameDay(null, null)).to.be.false;
+    });
+  });
+
+  describe('#sameTime', function() {
+    it('is a function', function() {
+      expect(sameTime).to.be.a('function');
+    });
+
+    it('is true for equal times', function() {
+      expect(sameTime(date2, date3)).to.be.true;
+    });
+
+    it('is false for different times', function() {
+      expect(sameTime(date1, date3)).to.be.false;
+    });
+
+    it('is false if one param is not a date', function() {
+      expect(sameTime(null, date3)).to.be.false;
+    });
+
+    it('is false if both params are not a date', function() {
+      expect(sameTime(null, null)).to.be.false;
     });
   });
 
