@@ -32,7 +32,6 @@ export default Ember.Component.extend({
     if (date && value) {
       date.setHours(value.getHours());
       date.setMinutes(value.getMinutes());
-      console.log(date);
       Ember.run.next(() => {
         this.set('value', date);
       });
