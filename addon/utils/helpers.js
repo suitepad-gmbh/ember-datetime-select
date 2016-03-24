@@ -21,6 +21,9 @@ export function endOfDay(date) {
 }
 
 export function sameDay(first, second) {
+  if (!(first instanceof Date) || !(second instanceof Date)) {
+    return false;
+  }
   let sameYear  = (first.getYear()  === second.getYear());
   let sameMonth = (first.getMonth() === second.getMonth());
   let sameDate  = (first.getDate()  === second.getDate());
@@ -28,6 +31,9 @@ export function sameDay(first, second) {
 }
 
 export function sameTime(first, second) {
+  if (!(first instanceof Date) || !(second instanceof Date)) {
+    return false;
+  }
   let sameHour   = (first.getHours()  === second.getHours());
   let sameMinute = (first.getMinutes() === second.getMinutes());
   return sameHour && sameMinute;
