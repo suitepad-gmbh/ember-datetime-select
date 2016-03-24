@@ -1,10 +1,21 @@
-/*jshint node:true*/
 /* global require, module */
+/* jscs:disable disallowVar, requireEnhancedObjectLiterals */
+/* jscs:disable requireTemplateStringsForConcatenation */
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
-    // Add options here
+    'ember-cli-mocha': {
+      useLintTree: false
+    },
+
+    // TODO: this is a fix for ember-suave not being compatible with mocha
+    // See: https://github.com/dockyard/ember-suave/issues/58
+    // Remove when this issue is fixed, also remove the testGenerator function
+    // at the end of this file.
+    jscsOptions: {
+      testGenerator: testGenerator
+    }
   });
 
   /*
@@ -16,3 +27,19 @@ module.exports = function(defaults) {
 
   return app.toTree();
 };
+
+function testGenerator(relativePath, errors) {
+  if (errors) {
+    errors = '\\n' + this.escapeErrorString(errors);
+  }
+
+  var expectString = relativePath + ' should pass JSCS' + errors;
+
+  return [
+    'describe("JSCS - ' + relativePath + '", function () {',
+      'it("should pass jscs", function () {',
+        'expect(' + !errors + ', "' + expectString + '").to.be.ok;',
+      '});',
+    '});'
+  ].join('\n');
+}

@@ -1,3 +1,11 @@
 <h2 id="title">Welcome to Ember</h2>
 
-{{outlet}}
+<p>
+  Date: {{date-select start=start end=end value=current1 cron="1 1 * * *" withEmpty="-- Select a date --"}}
+  {{current1}}
+</p>
+
+<p>
+  Time: {{time-select date=current1 value=current2 cron="*/15 8-16 * * *"}}
+  {{current2}}
+</p>

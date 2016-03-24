@@ -1,0 +1,7 @@
+{{#if withEmpty}}
+  <option value="">{{withEmpty}}</option>
+{{/if}}
+{{times}}
+{{#each times as |time|}}
+  <option value={{time}} selected={{time-eq time value}}>{{moment-format time format}}</option>
+{{/each}}

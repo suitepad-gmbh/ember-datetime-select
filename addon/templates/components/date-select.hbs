@@ -1,0 +1,6 @@
+{{#if withEmpty}}
+  <option value="">{{withEmpty}}</option>
+{{/if}}
+{{#each dates as |date|}}
+  <option value={{date}} selected={{date-eq date value}}>{{moment-format date format}}</option>
+{{/each}}
